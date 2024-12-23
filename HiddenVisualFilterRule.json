@@ -1,0 +1,101 @@
+{
+    "pbiEntries": [
+        {
+            "name": "reportLayout",
+            "pbixEntryPath": "Report/Layout",
+            "pbipEntryPath": "report.json",
+            "contentType": "json",
+            "codepage": 1200,
+            "rules": [
+                {
+                    "name": "Hide visual filters",
+                    "description": "Filters on the visual level are usually difficult for the user to find and operate, so they should generally be hidden and filters defined on the page level.",
+                    "logType": "warning",
+                    "disabled": false,
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*]",
+                    "pathErrorWhenNoMatch": true,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualContainer"
+                                        },
+                                        {
+                                            "or": [
+                                                {
+                                                    "some": [
+                                                        {
+                                                            "drillvar": "filters>"
+                                                        },
+                                                        {
+                                                            "!=": [
+                                                                {
+                                                                    "var": "isHiddenInViewMode"
+                                                                },
+                                                                true
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "some": [
+                                                        {
+                                                            "drillvar": "config>singleVisual.prototypeQuery.Select"
+                                                        },
+                                                        {
+                                                            "none": [
+                                                                {
+                                                                    "drillvar": "filters>"
+                                                                },
+                                                                {
+                                                                    "or": [
+                                                                        {
+                                                                            "==": [
+                                                                                {
+                                                                                    "var": "Name"
+                                                                                },
+                                                                                {
+                                                                                    "cat" : [{"var": "expression.Column.Expression.SourceRef.Entity"}, ".", {"var": "expression.Column.Property"}]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "==": [
+                                                                                {
+                                                                                    "var": "Name"
+                                                                                },
+                                                                                {
+                                                                                    "cat" : [{"var": "expression.Measure.Expression.SourceRef.Entity"}, ".", {"var": "expression.Measure.Property"}]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "drillvar": "config>name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualContainer": "."
+                        },
+                        []
+                    ]
+                }
+            ]
+        }
+    ]
+}

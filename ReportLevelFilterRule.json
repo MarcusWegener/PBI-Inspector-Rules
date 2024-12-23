@@ -1,0 +1,47 @@
+{
+    "pbiEntries": [
+        {
+            "name": "reportLayout",
+            "pbixEntryPath": "Report/Layout",
+            "pbipEntryPath": "report.json",
+            "contentType": "json",
+            "codepage": 1200,
+            "rules": [
+                {
+                    "name": "Report Level filters",
+                    "description": "When using filters at report level, you should check whether unnecessary data is loaded into the model.",
+                    "logType": "warning",
+                    "disabled": false,
+                    "path": "$.filters",
+                    "pathErrorWhenNoMatch": true,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                          "var": "f.0"
+                                        },
+                                        {
+                                          "some" : [ 
+                                            {"var": "filter.Where"},
+                                            {"var": "Condition"}
+                                          ]
+                                        }
+                                      ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "f": "."
+                        },
+                        []
+                    ]
+                }
+            ]
+        }
+    ]
+}

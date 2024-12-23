@@ -1,0 +1,80 @@
+{
+    "pbiEntries": [
+        {
+            "name": "reportLayout",
+            "pbixEntryPath": "Report/Layout",
+            "pbipEntryPath": "report.json",
+            "contentType": "json",
+            "codepage": 1200,
+            "rules": [
+                {
+                    "name": "No Measure filter from other tables",
+                    "description": "Checks whether Visual filters on Measures have been set to tables other than those displayed in the Visual.",
+                    "logType": "warning",
+                    "disabled": false,
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*]",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualContainer"
+                                        },
+                                        {
+                                            "some": [
+                                                {
+                                                    "filter": [
+                                                        {
+                                                            "drillvar": "filters>"
+                                                        },
+                                                        {
+                                                            "!=": [
+                                                                {
+                                                                    "var": "expression.Measure"
+                                                                },
+                                                                null
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "none": [
+                                                        {
+                                                            "drillvar": "config>singleVisual.prototypeQuery.From"
+                                                        },
+                                                        {
+                                                            "==": [
+                                                                {
+                                                                    "var": "Entity"
+                                                                },
+                                                                {
+                                                                    "var": "expression.Measure.Expression.SourceRef.Entity"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "drillvar": "config>name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualContainer": "."
+                        },
+                        []
+                    ]
+                }
+            ]
+        }
+    ]
+}
