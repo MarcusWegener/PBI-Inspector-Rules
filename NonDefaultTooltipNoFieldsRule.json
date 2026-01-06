@@ -1,0 +1,71 @@
+{
+    "pbiEntries": [
+        {
+            "name": "reportLayout",
+            "pbixEntryPath": "Report/Layout",
+            "pbipEntryPath": "report.json",
+            "contentType": "json",
+            "codepage": 1200,
+            "rules": [
+                {
+                    "name": "No tooltip fields if the tooltip type is not default",
+                    "description": "Checks whether fields are defined in the tooltip if the tooltip type is not default.",
+                    "logType": "warning",
+                    "disabled": false,
+                    "forEachPath": "$.sections[*]",
+                    "forEachPathName": "$.name",
+                    "forEachPathDisplayName": "$.displayName",
+                    "path": "$.visualContainers[*].config",
+                    "pathErrorWhenNoMatch": false,
+                    "test": [
+                        {
+                            "map": [
+                                {
+                                    "filter": [
+                                        {
+                                            "var": "visualsConfigArray"
+                                        },
+                                        {
+                                            "and": [
+                                                {
+                                                    "!=": [
+                                                        {
+                                                            "var": "singleVisual.projections.Tooltips"
+                                                        },
+                                                        null
+                                                    ]
+                                                },
+                                                {
+                                                    "none": [
+                                                        {
+                                                            "var": "singleVisual.vcObjects.visualTooltip"
+                                                        },
+                                                        {
+                                                            "==": [
+                                                                {
+                                                                    "var": "properties.type.expr.Literal.Value"
+                                                                },
+                                                                "'Default'"
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "var": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "visualsConfigArray": "."
+                        },
+                        []
+                    ]
+                }
+            ]
+        }
+    ]
+}
